@@ -21,6 +21,9 @@ import hashlib
 import json
 import pyPdf
 
+from PIL import Image
+from PIL.ExifTags import TAGS
+
 from hachoir_parser import createParser
 from hachoir_metadata import metadata
 
@@ -29,7 +32,8 @@ import hachoir_core.config
 hachoir_core.config.quiet = True
 
 # Globals Section
-FLIST  = []
+FLIST    = []
+EXIF_IMG = set(['jpg', 'tif', 'jpeg', 'png', 'tiff'])
 
 # Open the database, if it doesn't exist create the table
 def open_db():
@@ -120,7 +124,16 @@ def fs_walk(cwd, fs):
                         meta_dict[p.split(":")[0]] = p.split(":")[1]
                     # If the file was specifically a PNG, JPG, or GIF, get the exif data
                     #
-                    # 
+                    # This code segment was more or less taken from Marc Budofsky's exif.py
+                    # example.  It was modified to fit my setting, but the concept is the same.
+                    if fmime.intersection(EXIF_IMG) != set():
+                        try:
+                            info = Image.open(fname)._getexif()
+                            for t, v in info.items():
+                                dec = TAGS.get(t, t)
+                                meta[dec] = v
+                        except Exception as e: pass
+
                 
                 # File was neither of these, so delete it and continue
                 else: 
