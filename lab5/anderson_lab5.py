@@ -137,7 +137,7 @@ def fs_walk(cwd, fs):
                             info = Image.open(fname)._getexif()
                             for t, v in info.items():
                                 dec = TAGS.get(t, t)
-                                meta[dec] = v
+                                meta_dict[dec] = v
                         except Exception as e: pass
 
                 
@@ -180,6 +180,7 @@ def main(imgs):
                 # Enter file informatino into DB
                 cur.execute('''INSERT INTO recovered VALUES (NULL, ?, ?, ?)''', (unicode(fname, errors='replace'), md5, meta))
                 con.commit()
+            FLIST = [] # Clear the global files listing.
 
         else:
             print "Unable to find %s" % i
