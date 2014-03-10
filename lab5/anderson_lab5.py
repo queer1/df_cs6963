@@ -10,6 +10,12 @@
      * sqlite3
      * pyPdf
 
+     NOTE: When attempting to run this software an a clean slate of Ubuntu,
+     I had issues getting pytsk3 installed, as there were issues with references
+     to the sleuthkit headers provided by the Aptitude installation of sleuthkit.
+     To fix this, I downloaded, compiled, and installed tsk4.1.2, which fixed any
+     reference inssues, and allowed me to build pytsk3 from source.
+
 """
 
 import os
@@ -153,7 +159,7 @@ def main(imgs):
     global FLIST
 
     fout = open("report.csv",'w')
-    fout.write("File Name, MD5 Sum, Meta Data ...")
+    fout.write("File Name, MD5 Sum, Meta Data ...\n")
     rec = create_dir("./recovered/")
     (con, cur) = open_db()
 
