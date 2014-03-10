@@ -159,7 +159,7 @@ def main(imgs):
     global FLIST
 
     fout = open("report.csv",'w')
-    fout.write("File Name, MD5 Sum, Meta Data ...\n")
+    fout.write("File Name,MD5 Sum,Meta Data,...,Exif Data,...\n")
     rec = create_dir("./recovered/")
     (con, cur) = open_db()
 
